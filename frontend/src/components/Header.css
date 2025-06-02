@@ -1,0 +1,39 @@
+header {
+    background-color: var(--primary-color);
+    padding: 1rem;
+    color: var(--white);
+    text-align: left;
+}
+
+header {
+    margin: 0;
+    position: relative;
+    height: 105px;
+}
+
+.logoImage {
+    width: 93px;
+    height: 85px;  
+    position: absolute;
+    top: 50%;
+    left: 19;
+    transform: translateY(-50%);
+}
+
+.logoC {
+    position: absolute;
+    top: 60%;
+    left: 45px;
+    transform: translateY(-50%);
+    font-size: 60px;
+    color: var(--white);
+}
+
+.logoText {
+    position: absolute;
+    top: 60%;
+    left: 120px;
+    transform: translateY(-50%);
+    font-size: 60px;
+    color: var(--white);
+}
