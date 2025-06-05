@@ -1,0 +1,70 @@
+footer {
+    background-color: var(--primary-color);
+    padding-top: 1rem;
+    color: var(--white);
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#footer-description {
+    height: 347px;
+    max-width: 500px;
+    text-align: left;
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+.copyright {
+    text-align: left;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+    padding-left: 3vw;
+    background-color: var(--white);
+    color: var(--primary-color);
+}
+
+#footer-links {
+    margin-top: 40px;
+}
+
+.footer-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+}
+
+.footer-arrow {
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+}
+
+.footer-acerca {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    width: 30vw;
+    margin-right: 100px;
+}
+
+.accordion-item {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    text-align: left;
+}
+
+.accordion .item {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+}
+
+.accordion .item .accordion-header button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+}
