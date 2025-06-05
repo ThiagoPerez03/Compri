@@ -85,7 +85,7 @@ Para cambiarte a tu rama `git checkout rama`
 
 `git commit -m "mensaje descriptivo sobre tus cambios"` para empaquetar tus archivos junto con un mensaje breve y acorde a los cambios 
 
-`git push` para subir tus cambios a tu rama en el repo remoto
+`git push origin rama` para subir tus cambios a tu rama en el repo remoto
 
 ### Pull Request
 
