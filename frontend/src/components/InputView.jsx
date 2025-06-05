@@ -16,12 +16,11 @@ const InputView = () => {
         <Form.Control as="textarea" rows={3} placeholder="Ingrese el texto que desee comprimir"/>
       </Form.Group>
       <Form.Group controlId="FileInput" className="mb-3">
-        <Form.Label>aca va tu parte :p hace algo que me devuelva true o false si el campo esta completo
-        </Form.Label>
+        <Form.Label> ó </Form.Label>
         <Form.Control type="file" />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
+      <Button variant="primary" type="submit" className="SubmitBttn">
+        Comprimir ahora
       </Button>
     </Form>
   );
