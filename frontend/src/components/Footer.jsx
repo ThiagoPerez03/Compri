@@ -34,10 +34,18 @@ const Footer = () => {
                         y tamaño comprimido
                     </p>
                     <Stack direction='horizontal' gap={1} id="footer-links" >
-                        <Image src={instagram} alt="Instagram" className="footer-icon" />
-                        <Image src={facebook} alt="Facebook" className="footer-icon" />
-                        <Image src={wpp} alt="WhatsApp" className="footer-icon" />
-                        <Image src={discord} alt="Discord" className="footer-icon" />
+                        <a href="https://www.instagram.com/maxil31l/" target="_blank" rel="noopener noreferrer">
+                            <Image src={instagram} alt="Instagram" className="footer-icon" />
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                            <Image src={facebook} alt="Facebook" className="footer-icon" />
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                            <Image src={wpp} alt="WhatsApp" className="footer-icon" />
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                            <Image src={discord} alt="Discord" className="footer-icon" />
+                        </a>
                     </Stack>
                         
                 </div>
