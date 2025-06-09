@@ -33,7 +33,7 @@ Para instalarse un entorno virtual, parados sobre la carpeta de backend, pongan 
 - Cuando terminan de trabajar `deactivate` para desactivar el entorno virtual
 
 Luego instalan las librerías/dependencias con `pip install -r requirements.txt`
-**Cada vez que agreguen una librería y estén con el venv activado, usen `pip freeze > requirements.txt` para agregarlas al archivo y evitar confusiones. Igualmente avisar cuando se instalaron nuevas o utilizar el comando cada vez que estás por empezar a trabajar para estar actualizado**
+**Cada vez que agreguen una librería y estén con el venv activado, usen `pip freeze > requirements.txt` para agregarlas al archivo y evitar confusiones. Igualmente avisar cuando se instalaron nuevas o utilizar el comando cada vez que estás por empezar a trabajar para estar actualizado (esto último cuando estás en la main)**
 
 Después, `python manage.py migrate`. Esto va a aplicar las migraciones de la BBDD por primera vez en django. 
 
@@ -85,7 +85,7 @@ Para cambiarte a tu rama `git checkout rama`
 
 `git commit -m "mensaje descriptivo sobre tus cambios"` para empaquetar tus archivos junto con un mensaje breve y acorde a los cambios 
 
-`git push -u origin rama` para subir tus cambios a tu rama en el repo remoto la primera vez, después solo con git `git pull`
+`git push -u origin rama` para subir tus cambios a tu rama en el repo remoto la primera vez, después solo con `git pull`
 
 ### Pull Request
 
