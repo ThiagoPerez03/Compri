@@ -1,2 +1,8 @@
 media/
 .env
+
+.env
+.venv
+env/
+venv/
+ENV/
