@@ -11,7 +11,7 @@ Previo a utilizar el frontend van a tener que instalarse **Node.js** en sus comp
 
 Luego, dentro de la carpeta de frontend utilizan `npm install` para instalar todas las librerias y dependencias. 
 
-Para correr el proyecto, usar el comando `npm start`
+Para correr el proyecto, usar el comando `npm run dev`
 
 ---
 
