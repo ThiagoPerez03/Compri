@@ -24,21 +24,41 @@ ChartJS.register(
 export const options = {
   responsive: true,
   plugins: {
+    title: {
+      display: true,
+      text: 'Frecuencia',
+      align: 'start',
+      color: 'rgba(43, 54, 116, 1)',
+      font: {
+        size: 22,
+        weight: 'bold',
+      }
+    },
     legend: {
-      position: 'top',
+      display: false,
     },
   },
   scales: {
     x: {
       categoryPercentage: 0.95, // default es 0.8
       barPercentage: 0.95,      // default es 0.9
+      ticks: {
+        color: 'rgba(43, 54, 116, 1)',
+        font: {
+          size: 14,
+          weight: 'bold',
+        }
+      },
       grid: {
-        display: false          // para sacar la cuadrícula
+        display: false,         // para sacar la cuadrícula
       }
     },
     y: {
+      ticks: {
+        display: false,
+      },
       grid: {
-        display: false          // sacar la cuadrícula del eje y también
+        display: false,          // sacar la cuadrícula del eje y también
       }
     }
   }
@@ -65,7 +85,17 @@ export const data = {
     {
       label: 'Frecuencia de Bytes',
       data: DATOS.map(e => e.freq),
-      backgroundColor: 'rgba(43, 54, 116, 1)',
+      backgroundColor: (context) => {
+        const chart = context.chart;
+        const { ctx, chartArea } = chart;
+
+        if (!chartArea) return null;
+
+        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+        gradient.addColorStop(0, 'rgba(43, 54, 116, 1)');
+        gradient.addColorStop(1, 'rgba(43, 54, 116, 0.3)');
+        return gradient;
+      },
       borderWidth: 0,
       barThickness: 20,
       borderRadius: 20,
@@ -77,7 +107,7 @@ export const data = {
 const FreqTable = () => {
   return (
     <div id='freq-table'>
-      <Bar options={options} data={data}  />
+      <Bar options={options} data={data} />
     </div>
   );
 }
