@@ -18,7 +18,6 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-
 );
 
 export const options = {
