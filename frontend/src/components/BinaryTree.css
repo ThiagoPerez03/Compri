@@ -1,0 +1,88 @@
+.d3-tree-visualizer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: var(--background-color-light);
+  padding: 20px;
+}
+
+.d3-tree-visualizer-container h2 {
+  color: #333d60;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.svg-wrapper {
+  width: 100%;
+  height: 500px;
+  border: 1px solid #eee;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+}
+
+.svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Estilos de los nodos */
+.node circle {
+  stroke-width: 2px;
+  cursor: pointer;
+}
+
+.node text {
+  font-family: sans-serif;
+  font-size: 10px; 
+  text-anchor: middle;
+}
+
+/* Estilos de los enlaces */
+.link {
+  fill: none;
+  stroke: #999;
+  stroke-width: 2px;
+  transition: stroke 0.3s ease;
+}
+
+/* Estilos para las etiquetas de los enlaces (el '0' y '1') */
+.link-label {
+  font-family: sans-serif;
+  font-size: 10px; 
+  fill: #555;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* Colores específicos para nodos internos y hojas */
+.node--internal circle {
+  fill: #2c3e50;
+  stroke: #2c3e50;
+}
+.node--leaf circle {
+  fill: #6a7d9b;
+  stroke: #6a7d9b;
+}
+
+.node--internal text {
+  fill: white; /* Color de texto para nodos internos */
+  font-weight: bold;
+}
+.node--leaf text {
+  fill: #2c3e50; /* Color de texto para nodos hoja */
+}
+
+.node circle:hover {
+  stroke: #007bff;
+  stroke-width: 3px;
+}
+.link:hover {
+  stroke: #007bff;
+}
