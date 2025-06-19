@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 
 //estilos
 import './InputView.css'
+import FileInput from './FileInput'; 
 
 const InputView = () => {
 

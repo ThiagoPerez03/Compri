@@ -1,5 +1,7 @@
 // React component for the footer of the application
 import React from 'react';
+import { useState } from 'react';
+import { useContext } from 'react';
 import './Footer.css';
 
 // Bootstrap components
@@ -14,7 +16,6 @@ import instagram from '../assets/instagram.png';
 import facebook from '../assets/facebook.png';
 import wpp from '../assets/wpp.png';
 import discord from '../assets/discord.png';
-import arrow from '../assets/arrow.png';
   
 
 const Footer = () => {
@@ -29,10 +30,10 @@ const Footer = () => {
                         Compri es una aplicación interactiva que permite comprimir y
                         descomprimir mensajes o archivos de texto utilizando los algoritmos
                         de Huffman y Shannon-Fano, comparando sus resultados en términos de eficiencia
-                        y tamaño comprimido
+                        y tamaño comprimido.
                     </p>
                     <Stack direction='horizontal' gap={1} id="footer-links" >
-                        <a href="https://www.instagram.com/maxil31l/" target="_blank" rel="noopener noreferrer">
+                        <a href="#" target="_blank" rel="noopener noreferrer">
                             <Image src={instagram} alt="Instagram" className="footer-icon" />
                         </a>
                         <a href="#" target="_blank" rel="noopener noreferrer">
@@ -52,37 +53,39 @@ const Footer = () => {
                     <Accordion className="footer-accordion" flush>
                         <Accordion.Item className='item' eventKey="0">
                             <Accordion.Header>
-                                <Image src={arrow} alt="arrow" className="footer-arrow" /> Integrantes
+                                 Integrantes
                             </Accordion.Header>
                             <Accordion.Body>
                                 <ul>
                                     <li>Maximiliano Orellana</li>
-                                    <li>Martutuca</li>
+                                    <li>Martina Lopez</li>
                                     <li>Nahir Chosco Lopez</li>
-                                    <li>Thia</li>
+                                    <li>Thiago Perez</li>
                                 </ul>
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item className='item' eventKey="1">
                             <Accordion.Header>
-                                <Image src={arrow} alt="arrow" className="footer-arrow" /> Soporte
+                                 Soporte
                             </Accordion.Header>
                             <Accordion.Body>
-                                No hay xd proba con chat gpt https://chatgpt.com
+                                Si tenes alguna duda o necesitás ayuda con la aplicación, podes
+                                contactarnos a través de nuestras redes sociales o enviarnos un correo
+                                electrónico a compri@gmail.com
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item className='item' eventKey="2">
                             <Accordion.Header>
-                                <Image src={arrow} alt="arrow" className="footer-arrow" /> Terminos y condiciones
+                                Términos y condiciones
                             </Accordion.Header>
                             <Accordion.Body>
-                                De uso libre, no se hace responsable de la perdida de datos o
+                                De uso libre, no se hace responsable de la pérdida de datos o
                                 cualquier inconveniente que pueda surgir al utilizar la aplicación.
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item className='item' eventKey="3">
                             <Accordion.Header>
-                                <Image src={arrow} alt="arrow" className="footer-arrow" /> Privacidad
+                                Privacidad
                             </Accordion.Header>
                             <Accordion.Body>
                                 La aplicación no almacena ni comparte datos personales de los usuarios.
