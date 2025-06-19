@@ -1,0 +1,85 @@
+.huffman-table-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  overflow: hidden;
+  background-color: var(--white);
+}
+
+.huffman-table-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 1.5rem;
+  color: #333d60;
+  font-weight: 600;
+  font-size: 1.25rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.huffman-table-header h5 {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+
+.huffman-table-body {
+  padding: 0;
+}
+
+.huffman-table {
+  width: 100%;
+  margin-bottom: 0;
+  --bs-table-bg: #fff;
+  --bs-table-accent-bg: rgba(0, 0, 0, 0.03);
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.01);
+  --bs-table-active-bg: rgba(0, 0, 0, 0.05);
+}
+
+.huffman-table thead th {
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+
+.huffman-table tbody td {
+  padding: 0.75rem 1.5rem;
+  vertical-align: middle;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.huffman-table tbody td:nth-child(2),
+.huffman-table tbody td:nth-child(3),
+.huffman-table tbody td:nth-child(4) {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.longitud-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.huffman-progress-bar {
+  flex-grow: 1;
+  min-width: 50px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #e0e6f0;
+}
+
+.huffman-progress-bar .progress-bar {
+  background-color: var(--primary-color);
+  border-radius: 4px;
+}

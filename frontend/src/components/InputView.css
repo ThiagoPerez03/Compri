@@ -18,6 +18,16 @@ Form {
   border: 0px;
 }
 
+::placeholder {
+  color: var(--primary-color-light);
+}
+
+.o {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-color)
+}
+
 .SubmitBttn {
   background-color: var(--primary-color);
   color: var(--white);
