@@ -20,15 +20,6 @@ header {
     transform: translateY(-50%);
 }
 
-.logoC {
-    position: absolute;
-    top: 60%;
-    left: 45px;
-    transform: translateY(-50%);
-    font-size: 50px;
-    color: var(--white);
-}
-
 .logoText {
     position: absolute;
     top: 60%;

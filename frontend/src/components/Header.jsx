@@ -7,7 +7,6 @@ function Header() {
   return (
     <header>
         <Image src={logo} className='logoImage'/>
-        <h1 className='logoC'>C</h1>
         <h1 className='logoText'>ompri</h1>
     </header>
   );
