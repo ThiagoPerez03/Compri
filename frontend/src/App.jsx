@@ -16,7 +16,7 @@ function App() {
         <Header />
         <Routes> 
           <Route path="/" element={<InputView />} /> 
-          <Route path="/view2" element={<View2 />} /> 
+          <Route path="/resultado" element={<View2 />} /> 
         </Routes>
         <Footer />
       </Router>

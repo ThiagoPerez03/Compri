@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import './Switch.css'; 
 
+import huffmanData from '../Data/HuffmanData'; 
+import fanoShannonData from '../Data/FanoShannonData';
 import BinaryTree from './BinaryTree'; 
+
+
+import AlgorithmDataTable from './AlgorithmTable'; 
 
 
 const HuffmanComponent = () => (
   <div className="algorithm-content">
-    <h3>Contenido del Algoritmo Huffman</h3>
+    <AlgorithmDataTable data={huffmanData} title="Tabla con Algoritmo de Huffman" />
     <BinaryTree />
   </div>
 );
 
 const FanoShannonComponent = () => (
   <div className="algorithm-content">
-    <h3>Contenido del Algoritmo Fano-Shannon</h3>
-
+    <AlgorithmDataTable data={fanoShannonData} title="Tabla con Algoritmo de Fano-Shannon" />
   </div>
 );
 

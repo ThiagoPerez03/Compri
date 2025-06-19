@@ -5,8 +5,9 @@
   margin-top: 50px;
   width: 100%;
   border-radius: 8px;
-  background-color: var(--background-color-light);
+  background-color: var(--white);
   padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .d3-tree-visualizer-container h2 {
