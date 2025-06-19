@@ -16,7 +16,6 @@ import instagram from '../assets/instagram.png';
 import facebook from '../assets/facebook.png';
 import wpp from '../assets/wpp.png';
 import discord from '../assets/discord.png';
-
   
 
 const Footer = () => {
