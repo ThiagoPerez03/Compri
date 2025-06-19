@@ -4,6 +4,7 @@ import Header from './components/Header'; // Import the Header component
 import Footer from './components/Footer'; // Import the Footer component
 import InputView from './components/InputView';
 import FreqTable from './components/FreqTable';
+import LengthTable from './components/LengthTable';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <InputView />
       <FreqTable />
+      <LengthTable />
       <Footer />
     </div>
   );
