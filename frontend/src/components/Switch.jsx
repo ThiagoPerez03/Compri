@@ -1,33 +1,36 @@
 import React, { useState } from 'react';
-import './Switch.css'; 
+import './Switch.css';
 
-import huffmanData from '../Data/HuffmanData'; 
-import fanoShannonData from '../Data/FanoShannonData';
 import BinaryTree from './BinaryTree'; 
+import AlgorithmDataTable from './AlgorithmTable';
 
 
-import AlgorithmDataTable from './AlgorithmTable'; 
-
-
-const HuffmanComponent = () => (
+const HuffmanComponent = ({ huffmanDetails }) => (
   <div className="algorithm-content">
-    <AlgorithmDataTable data={huffmanData} title="Tabla con Algoritmo de Huffman" />
-    <BinaryTree />
+    <AlgorithmDataTable data={huffmanDetails.tabla_codigos} title="Tabla con Algoritmo de Huffman" />
+    <BinaryTree treeData={huffmanDetails.datos_visualizacion_arbol} /> 
   </div>
 );
 
-const FanoShannonComponent = () => (
+const ShannonFanoComponent = ({ shannonFanoDetails }) => (
   <div className="algorithm-content">
-    <AlgorithmDataTable data={fanoShannonData} title="Tabla con Algoritmo de Fano-Shannon" />
+    <AlgorithmDataTable data={shannonFanoDetails.tabla_codigos} title="Tabla con Algoritmo de Shannon-Fano" />
   </div>
 );
 
-const AlgorithmSwitcher = () => {
+const AlgorithmSwitcher = ({ compressionData }) => {
   const [activeAlgorithm, setActiveAlgorithm] = useState('huffman');
 
   const handleToggle = (algorithm) => {
     setActiveAlgorithm(algorithm);
   };
+
+  const huffmanDetails = compressionData?.algoritmos?.huffman;
+  const shannonFanoDetails = compressionData?.algoritmos?.shannon_fano;
+
+  if (!huffmanDetails || !shannonFanoDetails) {
+    return <div className="p-3 text-center">Cargando datos de algoritmos...</div>;
+  }
 
   return (
     <div className="algorithm-switcher-container">
@@ -39,18 +42,18 @@ const AlgorithmSwitcher = () => {
           Huffman
         </button>
         <button
-          className={`toggle-button ${activeAlgorithm === 'fano-shannon' ? 'active' : ''}`}
-          onClick={() => handleToggle('fano-shannon')}
+          className={`toggle-button ${activeAlgorithm === 'shannon-fano' ? 'active' : ''}`}
+          onClick={() => handleToggle('shannon-fano')}
         >
-          Fano-Shannon
+          Shannon-Fano
         </button>
       </div>
 
       <div className="content-display">
         {activeAlgorithm === 'huffman' ? (
-          <HuffmanComponent />
+          <HuffmanComponent huffmanDetails={huffmanDetails} />
         ) : (
-          <FanoShannonComponent />
+          <ShannonFanoComponent shannonFanoDetails={shannonFanoDetails} />
         )}
       </div>
     </div>

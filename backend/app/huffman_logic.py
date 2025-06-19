@@ -73,20 +73,23 @@ def calcular_estadisticas_huffman(texto_entrada):
             "nodos": nodos_formateados
         })
         
-    def formatear_arbol_para_frontend(nodo):
+    def formatear_arbol_para_frontend(nodo, bit_del_enlace=None): 
         if isinstance(nodo[2], str):
-            return {"name": f"'{nodo[2]}'", "value": nodo[0]}
+            
+            return {"name": f"{nodo[2]}", "value": nodo[0], "bit_code": bit_del_enlace} 
         
         frec = nodo[0]
-        datos_hijo_izquierdo = formatear_arbol_para_frontend(nodo[2][0])
-        datos_hijo_derecho = formatear_arbol_para_frontend(nodo[2][1])
+        # Pasa el bit "0" al hijo izquierdo y "1" al hijo derecho
+        datos_hijo_izquierdo = formatear_arbol_para_frontend(nodo[2][0], "0")
+        datos_hijo_derecho = formatear_arbol_para_frontend(nodo[2][1], "1")
         
         return {
             "name": f"{frec}",
-            "children": [datos_hijo_izquierdo, datos_hijo_derecho]
+            "children": [datos_hijo_izquierdo, datos_hijo_derecho],
+            "bit_code": bit_del_enlace 
         }
 
-    datos_visualizacion_arbol = formatear_arbol_para_frontend(raiz_arbol_huffman) if raiz_arbol_huffman else None
+    datos_visualizacion_arbol = formatear_arbol_para_frontend(raiz_arbol_huffman, None)
 
     # construye la tabla de códigos
     tabla_codigos = []

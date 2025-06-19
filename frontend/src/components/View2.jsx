@@ -25,7 +25,7 @@ function View2() {
   return (
     <div className="View2">
       <FileOutput compressionData={compressionData} />
-      <Switch /> 
+      <Switch compressionData={compressionData} /> 
     </div>
   );
 }
