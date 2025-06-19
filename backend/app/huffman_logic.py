@@ -133,8 +133,8 @@ def calcular_estadisticas_huffman(texto_entrada):
             "tasa_compresion_porcentaje": round(tasa_compresion, 2),
             "longitud_promedio_codigo": round(longitud_promedio_codigo, 2),
             "datos_visualizacion_arbol": datos_visualizacion_arbol,
-            "pasos_construccion_huffman": pasos_formateados
+            "pasos_construccion_huffman": pasos_formateados,
+            "mensaje_decodificado": mensaje_decodificado,
+            "error": None
         },
-        "mensaje_decodificado": mensaje_decodificado,
-        "error": None
     }
