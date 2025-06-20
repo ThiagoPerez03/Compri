@@ -1,111 +1,150 @@
 import React, { useState, useRef } from 'react';
-import './FileInput.css'; 
+import './FileInput.css';
 import Image from 'react-bootstrap/Image';
-import fileUploadArrow from '../assets/fileUploadArrow.png'; 
+import fileUploadArrow from '../assets/fileUploadArrow.png';
 
-const FileUploadComponent = () => {
-  const [fileName, setFileName] = useState('');
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [hasError, setHasError] = useState(false);
-  const fileInputRef = useRef(null); 
+const FileUploadComponent = ({ onFileSelect, onClearText }) => {
+    const [fileName, setFileName] = useState('');
+    const [isDragOver, setIsDragOver] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [hasError, setHasError] = useState(false);
+    const fileInputRef = useRef(null);
 
-  // Función para mostrar el error y programar su limpieza
-  const showAndClearError = (message) => {
-    setErrorMessage(message);
-    setHasError(true);
+    const allowedMimeTypes = [
+        'application/zip',
+        'application/x-zip-compressed',
+        'multipart/x-zip'
+    ];
+    const errorMessageText = 'Solo se permiten archivos .zip';
+    const acceptedFileExtension = '.zip';
 
-    // Limpiar el error después de 3 segundos
-    setTimeout(() => {
-      setErrorMessage('');
-      setHasError(false);
-    }, 3000); // 3000 milisegundos = 3 segundos
-  };
+    const isValidFile = (file) => {
+        const isMimeTypeValid = allowedMimeTypes.includes(file.type);
+        const isExtensionValid = file.name.toLowerCase().endsWith(acceptedFileExtension);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    // Limpiar cualquier error activo inmediatamente al interactuar de nuevo
-    setErrorMessage(''); 
-    setHasError(false); 
+        return isMimeTypeValid || isExtensionValid;
+    };
 
-    if (file) {
-      if (file.type === 'text/plain') {
-        setFileName(file.name);
-        console.log('Archivo seleccionado:', file.name);
-      } else {
-        setFileName('');
-        showAndClearError('Solo se permiten archivos .txt');
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
+    const showAndClearError = (message) => {
+        setErrorMessage(message);
+        setHasError(true);
+
+        setTimeout(() => {
+            setErrorMessage('');
+            setHasError(false);
+        }, 3000);
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setErrorMessage('');
+        setHasError(false);
+
+        if (file) {
+            if (isValidFile(file)) {
+                setFileName(file.name);
+                console.log('Archivo seleccionado:', file.name, 'Tipo MIME:', file.type);
+                if (onFileSelect) {
+                    onFileSelect(file);
+                }
+                if (onClearText) { 
+                    onClearText();
+                }
+            } else {
+                setFileName('');
+                showAndClearError(errorMessageText);
+                if (onFileSelect) {
+                    onFileSelect(null);
+                }
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                }
+            }
+        } else {
+            setFileName('');
+            if (onFileSelect) {
+                onFileSelect(null);
+            }
         }
-      }
-    }
-  };
+    };
 
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    setIsDragOver(true);
-  };
+    const handleDragOver = (event) => {
+        event.preventDefault();
+        setIsDragOver(true);
+    };
 
-  const handleDragLeave = () => {
-    setIsDragOver(false);
-  };
+    const handleDragLeave = () => {
+        setIsDragOver(false);
+    };
 
-  const handleDrop = (event) => {
-    event.preventDefault();
-    setIsDragOver(false);
-    // Limpiar cualquier error activo inmediatamente al interactuar de nuevo
-    setErrorMessage(''); 
-    setHasError(false); 
+    const handleDrop = (event) => {
+        event.preventDefault();
+        setIsDragOver(false);
+        setErrorMessage('');
+        setHasError(false);
 
-    const file = event.dataTransfer.files[0];
-    if (file) {
-      if (file.type === 'text/plain') {
-        setFileName(file.name);
-        console.log('Archivo soltado:', file.name);
-        if (fileInputRef.current) {
-          fileInputRef.current.files = event.dataTransfer.files;
+        const file = event.dataTransfer.files[0];
+        if (file) {
+            if (isValidFile(file)) {
+                setFileName(file.name);
+                console.log('Archivo soltado:', file.name, 'Tipo MIME:', file.type);
+                if (fileInputRef.current) {
+                    fileInputRef.current.files = event.dataTransfer.files;
+                }
+                if (onFileSelect) {
+                    onFileSelect(file);
+                }
+                if (onClearText) { 
+                    onClearText();
+                }
+            } else {
+                setFileName('');
+                showAndClearError(errorMessageText);
+                if (onFileSelect) {
+                    onFileSelect(null);
+                }
+            }
+        } else {
+            setFileName('');
+            if (onFileSelect) {
+                onFileSelect(null);
+            }
         }
-      } else {
-        setFileName('');
-        showAndClearError('Solo se permiten archivos .txt'); 
-      }
-    }
-  };
+    };
 
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
+    const handleClick = () => {
+        fileInputRef.current.click();
+    };
 
-  return (
-    <div
-      className={`file-upload-container ${isDragOver ? 'drag-over' : ''} ${hasError ? 'error-state-border' : ''}`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      onClick={handleClick}
-    >
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        accept=".txt"
-        style={{ display: 'none' }}
-      />
-      <div className="upload-icon">
-        <Image src={fileUploadArrow} alt="FileUploadArrow"/>
-      </div>
-      <p className="upload-text">Subir Archivo</p>
-      <p className="file-type-restriction">Solo archivos .txt están permitidos</p>
-      {fileName && <p className="selected-file-name">Archivo seleccionado: {fileName}</p>}
-      
-      {errorMessage && (
-        <p className="error-message-inline">
-          {errorMessage}
-        </p>
-      )}
-    </div>
-  );
+    return (
+        <div
+            className={`file-upload-container ${isDragOver ? 'drag-over' : ''} ${hasError ? 'error-state-border' : ''}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={handleClick}
+        >
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept={acceptedFileExtension} 
+                style={{ display: 'none' }}
+            />
+            <div className="upload-icon">
+                <Image src={fileUploadArrow} alt="FileUploadArrow"/>
+            </div>
+            <p className="upload-text">Subir Archivo</p>
+            <p className="file-type-restriction">{errorMessageText}</p> 
+            {fileName && <p className="selected-file-name">Archivo seleccionado: {fileName}</p>}
+
+            {errorMessage && (
+                <p className="error-message-inline">
+                    {errorMessage}
+                </p>
+            )}
+        </div>
+    );
 };
 
 export default FileUploadComponent;

@@ -1,8 +1,6 @@
-# backend/app/shannon_fano_logic.py
 from collections import Counter
 import json
 
-# --- Funciones internas del algoritmo  ---
 
 def _calcular_frecuencias_relativas(cadena):
     total_simbolos = len(cadena)
@@ -34,7 +32,6 @@ def _generar_codigos_recursivo(simbolos, codigo_actual="", codigos={}):
 def _codificar(cadena, mapa_codigos):
     return "".join(mapa_codigos.get(c, "") for c in cadena)
 
-# --- Función Principal de Compresión  ---
 
 def calcular_estadisticas_shannon_fano(texto_entrada):
     if not texto_entrada:
@@ -71,13 +68,9 @@ def calcular_estadisticas_shannon_fano(texto_entrada):
         "mapa_frecuencias": frecuencias_absolutas # ¡AÑADIDO! Necesario para la descarga
     }
 
-# --- FUNCIÓN DE DESCOMPRESIÓN ---
 
 def descomprimir_shannon_desde_archivo(contenido_archivo):
-    """
-    Descomprime un archivo binario que contiene un header JSON con frecuencias
-    y el cuerpo de datos comprimidos con Shannon-Fano.
-    """
+    
     separador = b'###SEPARATOR###'
     try:
         header_bytes, resto_archivo = contenido_archivo.split(separador, 1)
@@ -90,14 +83,12 @@ def descomprimir_shannon_desde_archivo(contenido_archivo):
     except (UnicodeDecodeError, json.JSONDecodeError):
         return {"error": "El header del archivo está corrupto o no es JSON válido."}
 
-    # Reconstruir códigos a partir de las frecuencias
     total_caracteres = sum(mapa_frecuencias_absolutas.values())
     mapa_frecuencias_relativas = {s: f / total_caracteres for s, f in mapa_frecuencias_absolutas.items()}
     simbolos_ordenados = _ordenar_simbolos(mapa_frecuencias_relativas)
     mapa_codigos = _generar_codigos_recursivo(list(simbolos_ordenados), codigos={})
     mapa_inverso_codigos = {v: k for k, v in mapa_codigos.items()}
 
-    # Leer padding y datos
     padding_info = resto_archivo[0]
     num_padding = int.from_bytes(padding_info.to_bytes(1, 'big'), 'big')
     datos_comprimidos = resto_archivo[1:]
@@ -106,7 +97,6 @@ def descomprimir_shannon_desde_archivo(contenido_archivo):
     if num_padding > 0:
         cadena_bits = cadena_bits[:-num_padding]
 
-    # Decodificar
     mensaje_decodificado = ""
     codigo_actual = ""
     for bit in cadena_bits:
