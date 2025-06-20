@@ -19,8 +19,12 @@ const CompressionSuccessCard = ({ compressionData }) => {
         }
 
         try {
+            // --- AJUSTE AQUÍ ---
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
             const encodedOriginalText = encodeURIComponent(compressionData.mensaje_original);
-            const downloadUrl = `http://localhost:8000/app/compress/?download=true&algorithm=${algorithm}&original_text=${encodedOriginalText}`;
+            
+            // Construye la URL de descarga usando la variable de entorno
+            const downloadUrl = `${apiUrl}/app/compress/?download=true&algorithm=${algorithm}&original_text=${encodedOriginalText}`;
             
             const response = await fetch(downloadUrl);
 

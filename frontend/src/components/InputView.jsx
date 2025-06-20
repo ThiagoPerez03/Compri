@@ -1,3 +1,5 @@
+// frontend/src/components/InputView.jsx
+
 // React
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 // Componentes
-import FileUploadComponent from './FileUpload'; // Make sure the path is correct
+import FileUploadComponent from './FileUpload';
 
 // Estilos
 import './InputView.css';
@@ -22,28 +24,20 @@ const InputView = () => {
 
     const handleTextChange = (e) => {
         setTextInput(e.target.value);
-        // If text is entered, clear any selected file
         if (selectedFile) {
             setSelectedFile(null);
         }
     };
 
-    // This function will be passed to FileUploadComponent
     const handleFileSelected = (file) => {
         setSelectedFile(file);
-        // If a file is selected, clear the text input
         if (file) {
             setTextInput('');
         }
     };
 
-    const handleClearTextInput = () => {
-        setTextInput('');
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         setLoading(true);
         setSubmitError(null);
 
@@ -52,6 +46,9 @@ const InputView = () => {
         if (selectedFile) {
             formData.append('file', selectedFile);
         } else if (textInput.trim() !== '') {
+            // --- AJUSTE IMPORTANTE AQUÍ ---
+            // Ya no enviamos JSON, enviamos todo como form-data
+            // para ser consistentes con la subida de archivos.
             formData.append('text', textInput);
         } else {
             setSubmitError("Por favor, ingrese texto o seleccione un archivo para comprimir.");
@@ -60,24 +57,32 @@ const InputView = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/app/compress/', {
+            // --- ¡LA LÍNEA MÁS IMPORTANTE! ---
+            // 1. Obtenemos la URL de la API desde la variable de entorno.
+            // 2. Si la variable no existe (porque estamos en desarrollo local),
+            //    usamos 'http://localhost:8000' como respaldo.
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            
+            // 3. Construimos la URL completa y hacemos la petición.
+            const response = await fetch(`${apiUrl}/app/api/compress/`, {
                 method: 'POST',
                 body: formData,
             });
+            // Ya no necesitamos 'Content-Type': 'application/json' porque estamos
+            // enviando todo como FormData, y el navegador lo ajusta automáticamente.
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || `Error del servidor: ${response.status} ${response.statusText}`);
+                throw new Error(errorData.error || `Error del servidor: ${response.status}`);
             }
 
             const data = await response.json();
             console.log('Datos recibidos del backend:', data);
-
             navigate('/resultado', { state: { compressionData: data } });
 
         } catch (err) {
             console.error('Error al enviar los datos:', err);
-            setSubmitError(`Error de conexiÃ³n o del servidor: ${err.message}`);
+            setSubmitError(`Error de conexión o del servidor: ${err.message}`);
         } finally {
             setLoading(false);
         }
@@ -94,14 +99,12 @@ const InputView = () => {
                     placeholder="Ingrese el texto que desee comprimir"
                     value={textInput}
                     onChange={handleTextChange}
-                    // Disable text input if a file is selected
                     disabled={selectedFile !== null}
                 />
             </Form.Group>
 
-            {/* Integrate FileUploadComponent here */}
             <Form.Group controlId="FileInput" className="mb-3">
-                <FileUploadComponent onFileSelected={handleFileSelected} />
+                <FileUploadComponent onFileSelected={handleFileSelected} onClearText={() => setTextInput('')} />
             </Form.Group>
 
             {submitError && <p className="text-danger mt-2">{submitError}</p>}

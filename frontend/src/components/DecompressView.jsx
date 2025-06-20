@@ -32,7 +32,10 @@ const DecompressionView = () => {
         formData.append('algorithm', selectedAlgorithm);
 
         try {
-            const response = await fetch('http://localhost:8000/app/decompress/', {
+            // --- AJUSTE AQUÍ ---
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            
+            const response = await fetch(`${apiUrl}/app/decompress/`, {
                 method: 'POST',
                 body: formData,
             });
