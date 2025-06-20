@@ -1,0 +1,53 @@
+
+.decompression-card {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.decompression-card .card-header {
+    background-color: var(--background-color) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+    color: var(--primary-color); 
+    font-weight: bold;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+
+.decompression-card .card-body {
+    background-color: var(--background-color);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px; 
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.decompression-card .decompressed-text-card {
+    background-color: var(--white);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.decompression-card .decompressed-text-card pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.decompression-card .mb-3 .file-upload-container {
+    margin: 15px 0;
+}
+
+.decompression-card .form-check-inline {
+    margin-right: 1.5rem;
+}
+
+.decompress-button{
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 18px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 10px 20px;
+}
+
+

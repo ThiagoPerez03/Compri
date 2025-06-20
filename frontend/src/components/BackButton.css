@@ -1,0 +1,28 @@
+.back-button-custom {
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--primary-color);
+    font-size: 1em;
+    font-weight: 500;
+    padding: 8px 15px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+    margin: 15px 0 15px 0;
+    text-decoration: none;
+}
+
+.back-button-custom:hover {
+    background-color: transparent !important;
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.back-button-custom img {
+    vertical-align: middle;
+}
+
