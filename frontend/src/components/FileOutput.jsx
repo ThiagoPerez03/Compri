@@ -1,11 +1,15 @@
 import React from 'react';
 import './FileOutput.css';
+
 import Image from 'react-bootstrap/esm/Image';
 import Button from 'react-bootstrap/Button';
 
 import FileDownload from '../assets/FileDownload.png';
+import { Image, Button, Alert } from 'react-bootstrap';
 
 const CompressionSuccessCard = ({ compressionData }) => {
+    const [downloadError, setDownloadError] = React.useState(null);
+    const [downloading, setDownloading] = React.useState(false);
 
   const handleDownloadClick = () => {
     console.log('Botón Descargar clickeado!');
@@ -94,6 +98,7 @@ const CompressionSuccessCard = ({ compressionData }) => {
       <div className="compression-card-container">
         <div className="icon-wrapper">
           <Image src={FileDownload} alt="FileDownload" fluid />
+
         </div>
         <h2 className="title">Tu compresión</h2>
         <p className="description">Tu texto fue comprimido correctamente.</p>
