@@ -55,6 +55,11 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOWED_ORIGINS = [
+    "https://compri-front.onrender.com",
+    "http://localhost:5173", # Añade esto para que siga funcionando en tu PC
+]
+
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 
 ROOT_URLCONF = 'backend.urls'
