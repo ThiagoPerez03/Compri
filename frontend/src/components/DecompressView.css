@@ -1,8 +1,8 @@
-
 .decompression-card {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    margin-top: -20px;
 }
 
 .decompression-card .card-header {
@@ -49,5 +49,3 @@
     font-weight: 500;
     padding: 10px 20px;
 }
-
-

@@ -29,7 +29,7 @@ const CompressionSuccessCard = ({ compressionData }) => {
                 try {
                     const errorJson = await response.json();
                     errorMsg = errorJson.error || errorMsg;
-                } catch (e) {
+                } catch {
                     errorMsg = `Error de servidor (${response.status}) al descargar el archivo de ${algorithm}.`;
                 }
                 throw new Error(errorMsg);
@@ -74,7 +74,7 @@ const CompressionSuccessCard = ({ compressionData }) => {
                     </Alert>
                 )}
 
-                <div className="d-flex justify-content-around mt-3">
+                <div className="button-group-container mt-3">
                     <Button 
                         variant="primary" 
                         className="download-button" 
@@ -85,7 +85,7 @@ const CompressionSuccessCard = ({ compressionData }) => {
                     </Button>
                     <Button 
                         variant="info" 
-                        className="download-button ms-2" 
+                        className="download-button" 
                         onClick={() => handleDownloadClick('shannon_fano')}
                         disabled={downloading || !compressionData?.mensaje_original}
                     >
