@@ -1,7 +1,5 @@
 // React component for the footer of the application
 import React from 'react';
-import { useState } from 'react';
-import { useContext } from 'react';
 import './Footer.css';
 
 // Bootstrap components

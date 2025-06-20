@@ -1,9 +1,9 @@
-import React, { useState } from 'react'; 
 import { useLocation } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './View2.css';
 import FileOutput from './FileOutput'; 
 import Switch from './Switch';
+import DiffTable from './DiffTable';
 import BackButton from './BackButton';
 
 function View2() {
@@ -28,6 +28,7 @@ function View2() {
       <BackButton /> 
       <FileOutput compressionData={compressionData} />
       <Switch compressionData={compressionData} /> 
+      <DiffTable data={compressionData} />
     </div>
   );
 }

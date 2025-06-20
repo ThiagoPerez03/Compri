@@ -3,6 +3,8 @@ import './Switch.css';
 
 import BinaryTree from './BinaryTree'; 
 import AlgorithmDataTable from './AlgorithmTable';
+import LengthTable from './LengthTable';
+import FreqTable from './FreqTable';
 
 
 const HuffmanComponent = ({ huffmanDetails }) => (
@@ -51,9 +53,17 @@ const AlgorithmSwitcher = ({ compressionData }) => {
 
       <div className="content-display">
         {activeAlgorithm === 'huffman' ? (
-          <HuffmanComponent huffmanDetails={huffmanDetails} />
+          <>
+            <FreqTable data={huffmanDetails}/>
+            <LengthTable data={huffmanDetails}/>
+            <HuffmanComponent huffmanDetails={huffmanDetails} />
+          </>
         ) : (
-          <ShannonFanoComponent shannonFanoDetails={shannonFanoDetails} />
+          <>
+            <FreqTable data={shannonFanoDetails}/>
+            <LengthTable data={shannonFanoDetails}/>
+            <ShannonFanoComponent shannonFanoDetails={shannonFanoDetails} />
+          </>
         )}
       </div>
     </div>

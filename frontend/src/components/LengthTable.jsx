@@ -1,5 +1,5 @@
 import React from "react";
-import './FreqTable.css';
+import './LengthTable.css';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,7 +25,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Frecuencia',
+      text: 'Longitud',
       align: 'start',
       color: 'rgba(43, 54, 116, 1)',
       font: {
@@ -63,14 +63,16 @@ export const options = {
   }
 };
 
-const FreqTable = (datos) => {
+
+
+const LengthTable = (datos) => {
   const data = datos.data.tabla_codigos; // {caracter codigo frecuencia probabilidad}
   const ChartData = {
     labels: data.map(e => e.caracter),
     datasets: [
       {
-        label: 'Frecuencia de caracter',
-        data: data.map(e => e.frecuencia),
+        label: 'Largo de caracter (en bits)',
+        data: data.map(e => e.codigo.length),
         backgroundColor: (context) => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
@@ -89,11 +91,12 @@ const FreqTable = (datos) => {
       }
     ]
   };
-  return (
-    <div id='freq-table'>
+ 
+ return (
+    <div id='length-table'>
       <Bar options={options} data={ChartData} />
     </div>
   );
 }
 
-export default FreqTable;
+export default LengthTable;
