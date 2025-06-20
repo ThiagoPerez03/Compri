@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './View2.css';
 import FileOutput from './FileOutput'; 
 import Switch from './Switch';
+import BackButton from './BackButton';
 
 function View2() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function View2() {
 
   return (
     <div className="View2">
+      <BackButton /> 
       <FileOutput compressionData={compressionData} />
       <Switch compressionData={compressionData} /> 
     </div>
