@@ -2,9 +2,9 @@
   border: none;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  max-width: 900px;
   overflow: hidden;
   background-color: var(--white);
+  width: 60vw;
 }
 
 .table-header {

@@ -58,3 +58,23 @@
   padding: 20px;
   background-color: var(--background-color);
 }
+
+.table {
+  grid-area: tabla;
+}
+
+.freq {
+  grid-area: freq;
+}
+
+.length {
+  grid-area: length;
+}
+
+.arbol-binario {
+  width: 80vw;
+}
+
+.diff-bin {
+  padding-top: 3dvh;
+}

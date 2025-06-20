@@ -5,7 +5,7 @@ import './BinaryTree.css';
 const D3BinaryTree = ({ treeData }) => { 
     const svgRef = useRef(null);
 
-    const width = 1000;
+    const width = 2000;
     const height = 600;
     const margin = { top: 40, right: 40, bottom: 40, left: 40 };
 
