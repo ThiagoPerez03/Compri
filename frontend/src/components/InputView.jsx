@@ -39,14 +39,13 @@ const InputView = () => {
         setLoading(true);
         setSubmitError(null);
 
-        const formData = new FormData();
         let requestBody;
         let headers = {};
 
         if (selectedFile) {
+            const formData = new FormData();
             formData.append('file', selectedFile);
             requestBody = formData;
-            // No establezcas Content-Type, el navegador lo hará por ti para multipart/form-data
         } else if (textInput.trim() !== '') {
             requestBody = JSON.stringify({ text: textInput });
             headers['Content-Type'] = 'application/json';
@@ -59,7 +58,8 @@ const InputView = () => {
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
             
-            const response = await fetch(`${apiUrl}/app/api/compress/`, {
+            // --- CORRECCIÓN DE URL ---
+            const response = await fetch(`${apiUrl}/app/compress/`, { // Se quita /api/
                 method: 'POST',
                 headers: headers,
                 body: requestBody,
@@ -71,11 +71,9 @@ const InputView = () => {
             }
 
             const data = await response.json();
-            console.log('Datos recibidos del backend:', data);
             navigate('/resultado', { state: { compressionData: data } });
 
         } catch (err) {
-            console.error('Error al enviar los datos:', err);
             setSubmitError(`Error de conexión o del servidor: ${err.message}`);
         } finally {
             setLoading(false);
@@ -98,13 +96,7 @@ const InputView = () => {
             </Form.Group>
 
             <Form.Group controlId="FileInput" className="mb-3">
-                <FileUploadComponent 
-                    onFileSelect={handleFileSelected} 
-                    onClearText={() => setTextInput('')}
-                    // Props para configurar el tipo de archivo permitido
-                    acceptedExtension=".txt"
-                    errorMessageText="Solo se permiten archivos .txt"
-                />
+                <FileUploadComponent onFileSelected={handleFileSelected} onClearText={() => setTextInput('')} acceptedExtension=".txt" errorMessageText="Solo se permiten archivos .txt" />
             </Form.Group>
 
             {submitError && <p className="text-danger mt-2">{submitError}</p>}
