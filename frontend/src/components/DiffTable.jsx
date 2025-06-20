@@ -2,9 +2,9 @@ import React from "react";
 import { Card, Table} from 'react-bootstrap';
 import './DifTable.css'
 
-const DiffTable = (data) => {
-  const Huffman = data.data.algoritmos.huffman;
-  const FanoShannon = data.data.algoritmos.shannon_fano;
+const DiffTable = ({huffmanDetails, shannonFanoDetails}) => {
+  const Huffman = huffmanDetails;
+  const FanoShannon = shannonFanoDetails;
   return (
     <Card className="diff-table">
       <Card.Header className="table-header">
@@ -28,7 +28,7 @@ const DiffTable = (data) => {
               <td>{Huffman.longitud_promedio_codigo}</td>
             </tr>
             <tr>
-              <td>{'FanoShannon'}</td>
+              <td>{'Shannon-Fano'}</td>
               <td>{FanoShannon.tasa_compresion_porcentaje} %</td>
               <td>{'45.3'}</td>
               <td>{FanoShannon.longitud_promedio_codigo}</td>

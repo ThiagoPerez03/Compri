@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
 import './Switch.css';
 
-import BinaryTree from './BinaryTree'; 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+import BinaryTree from './BinaryTree';
 import AlgorithmDataTable from './AlgorithmTable';
 import LengthTable from './LengthTable';
 import FreqTable from './FreqTable';
+import DiffTable from './DiffTable';
+import { Stack } from 'react-bootstrap';
 
 
-const HuffmanComponent = ({ huffmanDetails }) => (
+const HuffmanComponent = ({ huffmanDetails, shannonFanoDetails }) => (
   <div className="algorithm-content">
     <AlgorithmDataTable data={huffmanDetails.tabla_codigos} title="Tabla con Algoritmo de Huffman" />
-    <BinaryTree treeData={huffmanDetails.datos_visualizacion_arbol} /> 
+    <Stack className='align-items-center justify-content-center' direction='vertical' gap={3} style={{minHeight: "100vh"}}>
+      <DiffTable huffmanDetails={huffmanDetails} shannonFanoDetails={shannonFanoDetails} />
+      <BinaryTree treeData={huffmanDetails.datos_visualizacion_arbol} />
+    </Stack>
   </div>
 );
 
@@ -53,18 +62,56 @@ const AlgorithmSwitcher = ({ compressionData }) => {
 
       <div className="content-display">
         {activeAlgorithm === 'huffman' ? (
-          <>
-            <FreqTable data={huffmanDetails}/>
-            <LengthTable data={huffmanDetails}/>
-            <HuffmanComponent huffmanDetails={huffmanDetails} />
-          </>
+          <Container fluid>
+            <Row>
+              <Col md={8}>
+                <AlgorithmDataTable className='tabla' data={huffmanDetails.tabla_codigos} title={"tabla con algoritmo de Huffman"}/>
+              </Col>
+              <Col md={4}>
+                <Row className="mb-4">
+                  <Col>
+                    <FreqTable className='freq' data={huffmanDetails} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <LengthTable className='length' data={huffmanDetails} />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Container>
         ) : (
-          <>
-            <FreqTable data={shannonFanoDetails}/>
-            <LengthTable data={shannonFanoDetails}/>
-            <ShannonFanoComponent shannonFanoDetails={shannonFanoDetails} />
-          </>
+          <Container fluid>
+            <Row>
+              <Col md={8}>
+                <AlgorithmDataTable className='tabla' data={shannonFanoDetails.tabla_codigos} title={"tabla con algoritmo de Huffman"}/>
+              </Col>
+              <Col md={4}>
+                <Row className="mb-4">
+                  <Col>
+                    <FreqTable className='freq' data={shannonFanoDetails} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <LengthTable className='length' data={shannonFanoDetails} />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Container>
+
         )}
+        <Stack direction='vertical' gap={3} className='diff-bin align-items-center justify-content-center'>
+          <DiffTable huffmanDetails={huffmanDetails} shannonFanoDetails={shannonFanoDetails} /> 
+          {activeAlgorithm === 'huffman' ? (
+          <BinaryTree className='arbol-binario' treeData={huffmanDetails.datos_visualizacion_arbol}/>
+          ):(
+          <>
+          </>
+          )}
+        </Stack>
       </div>
     </div>
   );
