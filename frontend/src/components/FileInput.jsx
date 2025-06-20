@@ -3,68 +3,42 @@ import './FileInput.css';
 import Image from 'react-bootstrap/Image';
 import fileUploadArrow from '../assets/fileUploadArrow.png';
 
-const FileUploadComponent = ({ onFileSelect, onClearText }) => {
+const FileUploadComponent = ({ onFileSelect, onClearText, acceptedExtension = '.txt', allowedMimeTypes = ['text/plain'], errorMessageText = 'Solo se permiten archivos .txt' }) => {
     const [fileName, setFileName] = useState('');
     const [isDragOver, setIsDragOver] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [hasError, setHasError] = useState(false);
     const fileInputRef = useRef(null);
 
-    const allowedMimeTypes = [
-        'application/zip',
-        'application/x-zip-compressed',
-        'multipart/x-zip'
-    ];
-    const errorMessageText = 'Solo se permiten archivos .zip';
-    const acceptedFileExtension = '.zip';
-
+    // Función de validación más robusta
     const isValidFile = (file) => {
-        const isMimeTypeValid = allowedMimeTypes.includes(file.type);
-        const isExtensionValid = file.name.toLowerCase().endsWith(acceptedFileExtension);
-
-        return isMimeTypeValid || isExtensionValid;
+        if (!file) return false;
+        // La validación más confiable es por la extensión del nombre del archivo.
+        return file.name.toLowerCase().endsWith(acceptedExtension);
     };
 
     const showAndClearError = (message) => {
         setErrorMessage(message);
-        setHasError(true);
+        setTimeout(() => setErrorMessage(''), 3000);
+    };
 
-        setTimeout(() => {
+    const processFile = (file) => {
+        if (isValidFile(file)) {
+            setFileName(file.name);
+            if (onFileSelect) onFileSelect(file);
+            if (onClearText) onClearText();
             setErrorMessage('');
-            setHasError(false);
-        }, 3000);
+        } else {
+            setFileName('');
+            showAndClearError(errorMessageText);
+            if (onFileSelect) onFileSelect(null);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+        }
     };
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        setErrorMessage('');
-        setHasError(false);
-
         if (file) {
-            if (isValidFile(file)) {
-                setFileName(file.name);
-                console.log('Archivo seleccionado:', file.name, 'Tipo MIME:', file.type);
-                if (onFileSelect) {
-                    onFileSelect(file);
-                }
-                if (onClearText) { 
-                    onClearText();
-                }
-            } else {
-                setFileName('');
-                showAndClearError(errorMessageText);
-                if (onFileSelect) {
-                    onFileSelect(null);
-                }
-                if (fileInputRef.current) {
-                    fileInputRef.current.value = '';
-                }
-            }
-        } else {
-            setFileName('');
-            if (onFileSelect) {
-                onFileSelect(null);
-            }
+            processFile(file);
         }
     };
 
@@ -73,48 +47,26 @@ const FileUploadComponent = ({ onFileSelect, onClearText }) => {
         setIsDragOver(true);
     };
 
-    const handleDragLeave = () => {
-        setIsDragOver(false);
-    };
+    const handleDragLeave = () => setIsDragOver(false);
 
     const handleDrop = (event) => {
         event.preventDefault();
         setIsDragOver(false);
-        setErrorMessage('');
-        setHasError(false);
-
         const file = event.dataTransfer.files[0];
         if (file) {
-            if (isValidFile(file)) {
-                setFileName(file.name);
-                console.log('Archivo soltado:', file.name, 'Tipo MIME:', file.type);
-                if (fileInputRef.current) {
-                    fileInputRef.current.files = event.dataTransfer.files;
-                }
-                if (onFileSelect) {
-                    onFileSelect(file);
-                }
-                if (onClearText) { 
-                    onClearText();
-                }
-            } else {
-                setFileName('');
-                showAndClearError(errorMessageText);
-                if (onFileSelect) {
-                    onFileSelect(null);
-                }
+            if (fileInputRef.current) {
+                fileInputRef.current.files = event.dataTransfer.files;
             }
-        } else {
-            setFileName('');
-            if (onFileSelect) {
-                onFileSelect(null);
-            }
+            processFile(file);
         }
     };
 
     const handleClick = () => {
         fileInputRef.current.click();
     };
+
+    // Determina si hay error para aplicar el estilo al borde
+    const hasError = !!errorMessage;
 
     return (
         <div
@@ -128,21 +80,18 @@ const FileUploadComponent = ({ onFileSelect, onClearText }) => {
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                accept={acceptedFileExtension} 
+                accept={acceptedExtension} 
                 style={{ display: 'none' }}
             />
             <div className="upload-icon">
                 <Image src={fileUploadArrow} alt="FileUploadArrow"/>
             </div>
             <p className="upload-text">Subir Archivo</p>
-            <p className="file-type-restriction">{errorMessageText}</p> 
-            {fileName && <p className="selected-file-name">Archivo seleccionado: {fileName}</p>}
-
-            {errorMessage && (
-                <p className="error-message-inline">
-                    {errorMessage}
-                </p>
-            )}
+            {/* Muestra el mensaje de error o la restricción de tipo de archivo */}
+            <p className={`file-type-restriction ${hasError ? 'error-message-inline' : ''}`}>
+                {errorMessage || errorMessageText}
+            </p> 
+            {fileName && !hasError && <p className="selected-file-name">Archivo seleccionado: {fileName}</p>}
         </div>
     );
 };

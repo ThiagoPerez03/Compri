@@ -32,10 +32,9 @@ const DecompressionView = () => {
         formData.append('algorithm', selectedAlgorithm);
 
         try {
-            // --- AJUSTE AQUÍ ---
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
             
-            const response = await fetch(`${apiUrl}/app/decompress/`, {
+            const response = await fetch(`${apiUrl}/app/api/decompress/`, { // Asegúrate que esta URL sea correcta
                 method: 'POST',
                 body: formData,
             });
@@ -111,9 +110,14 @@ const DecompressionView = () => {
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <FileInput onFileSelect={handleFileSelected} />
-                        {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
+                        <FileInput 
+                            onFileSelect={handleFileSelected} 
+                            acceptedExtension=".zip"
+                            errorMessageText="Solo se permiten archivos .zip"
+                        />
                     </Form.Group>
+
+                    {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
 
                     <Button variant="primary" type="submit" className="decompress-button" disabled={isSubmitDisabled}>
                         {loading ? 'Descomprimiendo...' : 'Descomprimir'}

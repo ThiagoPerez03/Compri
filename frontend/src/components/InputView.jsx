@@ -1,5 +1,3 @@
-// frontend/src/components/InputView.jsx
-
 // React
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -42,14 +40,16 @@ const InputView = () => {
         setSubmitError(null);
 
         const formData = new FormData();
+        let requestBody;
+        let headers = {};
 
         if (selectedFile) {
             formData.append('file', selectedFile);
+            requestBody = formData;
+            // No establezcas Content-Type, el navegador lo hará por ti para multipart/form-data
         } else if (textInput.trim() !== '') {
-            // --- AJUSTE IMPORTANTE AQUÍ ---
-            // Ya no enviamos JSON, enviamos todo como form-data
-            // para ser consistentes con la subida de archivos.
-            formData.append('text', textInput);
+            requestBody = JSON.stringify({ text: textInput });
+            headers['Content-Type'] = 'application/json';
         } else {
             setSubmitError("Por favor, ingrese texto o seleccione un archivo para comprimir.");
             setLoading(false);
@@ -57,19 +57,13 @@ const InputView = () => {
         }
 
         try {
-            // --- ¡LA LÍNEA MÁS IMPORTANTE! ---
-            // 1. Obtenemos la URL de la API desde la variable de entorno.
-            // 2. Si la variable no existe (porque estamos en desarrollo local),
-            //    usamos 'http://localhost:8000' como respaldo.
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
             
-            // 3. Construimos la URL completa y hacemos la petición.
             const response = await fetch(`${apiUrl}/app/api/compress/`, {
                 method: 'POST',
-                body: formData,
+                headers: headers,
+                body: requestBody,
             });
-            // Ya no necesitamos 'Content-Type': 'application/json' porque estamos
-            // enviando todo como FormData, y el navegador lo ajusta automáticamente.
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -104,7 +98,13 @@ const InputView = () => {
             </Form.Group>
 
             <Form.Group controlId="FileInput" className="mb-3">
-                <FileUploadComponent onFileSelected={handleFileSelected} onClearText={() => setTextInput('')} />
+                <FileUploadComponent 
+                    onFileSelect={handleFileSelected} 
+                    onClearText={() => setTextInput('')}
+                    // Props para configurar el tipo de archivo permitido
+                    acceptedExtension=".txt"
+                    errorMessageText="Solo se permiten archivos .txt"
+                />
             </Form.Group>
 
             {submitError && <p className="text-danger mt-2">{submitError}</p>}
