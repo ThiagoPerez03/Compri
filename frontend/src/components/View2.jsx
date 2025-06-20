@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './View2.css';
 import FileOutput from './FileOutput'; 
 import Switch from './Switch';
+import DiffTable from './DiffTable';
 
 function View2() {
   const location = useLocation();
@@ -25,6 +26,7 @@ function View2() {
     <div className="View2">
       <FileOutput compressionData={compressionData} />
       <Switch compressionData={compressionData} /> 
+      <DiffTable data={compressionData} />
     </div>
   );
 }
