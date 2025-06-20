@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 
 // Estilos
 import './InputView.css';
-import FileInput from './FileInput'; 
 
 const InputView = () => {
     const navigate = useNavigate();
@@ -94,10 +93,6 @@ const InputView = () => {
             </Form.Group>
             <Form.Group controlId="FileInput.jsx" className="mb-3">
                 <Form.Label className="o"> ó </Form.Label>
-                <FileInput
-                    onFileSelect={handleFileSelected}
-                    onClearText={handleClearTextInput}
-                />
             </Form.Group>
             {submitError && <p className="text-danger mt-2">{submitError}</p>}
             <Button variant="primary" type="submit" className="SubmitBttn" disabled={isSubmitDisabled}>
