@@ -3,7 +3,7 @@ import './FileInput.css';
 import Image from 'react-bootstrap/Image';
 import fileUploadArrow from '../assets/fileUploadArrow.png';
 
-const FileUploadComponent = ({ onFileSelect, onClearText, acceptedExtension = '.txt', allowedMimeTypes = ['text/plain'], errorMessageText = 'Solo se permiten archivos .txt' }) => {
+const FileUploadComponent = ({ onFileSelect, onClearText, acceptedExtension = '.txt', errorMessageText = 'Solo se permiten archivos .txt' }) => {
     const [fileName, setFileName] = useState('');
     const [isDragOver, setIsDragOver] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');

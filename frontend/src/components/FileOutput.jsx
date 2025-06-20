@@ -3,12 +3,12 @@ import './FileOutput.css';
 import { Image, Button, Alert } from 'react-bootstrap';
 import FileDownload from '../assets/FileDownload.png';
 
-const CompressionSuccessCard = ({ compressionData }) => {
+const FileOutput = ({ compressionData }) => {
     const [downloadError, setDownloadError] = React.useState(null);
     const [downloading, setDownloading] = React.useState(false);
 
     const handleDownloadClick = async (algorithm) => {
-        console.log(`Botón Descargar para ${algorithm} clickeado!`);
+        console.log(`Iniciando descarga para ${algorithm}...`);
         setDownloadError(null); 
         setDownloading(true); 
 
@@ -19,26 +19,27 @@ const CompressionSuccessCard = ({ compressionData }) => {
         }
 
         try {
-            // --- AJUSTE AQUÍ ---
+            // 1. Obtiene la URL del backend desde las variables de entorno (o usa localhost si no existe)
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
             const encodedOriginalText = encodeURIComponent(compressionData.mensaje_original);
             
-            // Construye la URL de descarga usando la variable de entorno
-            const downloadUrl = `${apiUrl}/app/compress/?download=true&algorithm=${algorithm}&original_text=${encodedOriginalText}`;
+            // 2. Construye la URL de descarga correcta, incluyendo /api/
+            const downloadUrl = `${apiUrl}/app/api/compress/?download=true&algorithm=${algorithm}&original_text=${encodedOriginalText}`;
             
             const response = await fetch(downloadUrl);
 
             if (!response.ok) {
-                let errorMsg = `Error al descargar el archivo de ${algorithm}.`;
+                let errorMsg = `Error de servidor (${response.status}) al descargar el archivo de ${algorithm}.`;
                 try {
                     const errorJson = await response.json();
                     errorMsg = errorJson.error || errorMsg;
                 } catch {
-                    errorMsg = `Error de servidor (${response.status}) al descargar el archivo de ${algorithm}.`;
+                    // El cuerpo de la respuesta de error podría no ser JSON
                 }
                 throw new Error(errorMsg);
             }
 
+            // 3. Procesa la respuesta y ofrece el archivo para descargar
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -83,15 +84,15 @@ const CompressionSuccessCard = ({ compressionData }) => {
                         variant="primary" 
                         className="download-button" 
                         onClick={() => handleDownloadClick('huffman')}
-                        disabled={downloading || !compressionData?.mensaje_original}
+                        disabled={downloading}
                     >
                         {downloading ? 'Descargando...' : 'Descargar Huffman'}
                     </Button>
                     <Button 
-                        variant="info" 
+                        variant="primary" 
                         className="download-button" 
                         onClick={() => handleDownloadClick('shannon_fano')}
-                        disabled={downloading || !compressionData?.mensaje_original}
+                        disabled={downloading}
                     >
                         {downloading ? 'Descargando...' : 'Descargar Shannon-Fano'}
                     </Button>
@@ -101,4 +102,4 @@ const CompressionSuccessCard = ({ compressionData }) => {
     );
 };
 
-export default CompressionSuccessCard;
+export default FileOutput;
