@@ -1,4 +1,3 @@
-# backend/app/views.py
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -78,7 +77,6 @@ def api_de_compresion(peticion):
         resultados_huffman = calcular_estadisticas_huffman(datos_de_entrada)
         resultados_shannon = calcular_estadisticas_shannon_fano(datos_de_entrada)
         
-        # Construye la respuesta JSON combinada
         datos_respuesta = {
             "mensaje_original": datos_de_entrada,
             "longitud_original_bits": len(datos_de_entrada) * 7,
@@ -101,7 +99,6 @@ def api_de_descompresion(peticion):
         
         try:
             with zipfile.ZipFile(archivo_zip_subido, 'r') as zf:
-                # Asumimos que el ZIP contiene un solo archivo .json
                 nombre_del_archivo_interno = zf.namelist()[0]
                 datos_comprimidos = json.loads(zf.read(nombre_del_archivo_interno))
                 codigos = datos_comprimidos.get("codigos")
@@ -110,7 +107,6 @@ def api_de_descompresion(peticion):
                 if not codigos or mensaje_comprimido is None:
                     return JsonResponse({"error": "El archivo comprimido no tiene el formato correcto."}, status=400)
                 
-                # Invertir el mapa de códigos para decodificar
                 mapa_inverso = {v: k for k, v in codigos.items()}
                 mensaje_decodificado = ""
                 codigo_actual = ""
@@ -121,8 +117,7 @@ def api_de_descompresion(peticion):
                         codigo_actual = ""
 
                 return JsonResponse({"mensaje_decodificado": mensaje_decodificado})
-
-        except (zipfile.BadZipFile, IndexError, json.JSONDecodeError):
+        except Exception:
             return JsonResponse({"error": "El archivo ZIP es inválido o tiene un formato incorrecto."}, status=400)
 
     return JsonResponse({"error": "Método no permitido."}, status=405)
