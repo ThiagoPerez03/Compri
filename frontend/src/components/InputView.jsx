@@ -1,10 +1,13 @@
 // React
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 // Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
+// Componentes
+import FileUploadComponent from './FileUpload'; // Make sure the path is correct
 
 // Estilos
 import './InputView.css';
@@ -15,17 +18,20 @@ const InputView = () => {
     const [textInput, setTextInput] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [submitError, setSubmitError] = useState(null); 
+    const [submitError, setSubmitError] = useState(null);
 
     const handleTextChange = (e) => {
         setTextInput(e.target.value);
+        // If text is entered, clear any selected file
         if (selectedFile) {
             setSelectedFile(null);
         }
     };
 
+    // This function will be passed to FileUploadComponent
     const handleFileSelected = (file) => {
         setSelectedFile(file);
+        // If a file is selected, clear the text input
         if (file) {
             setTextInput('');
         }
@@ -36,12 +42,12 @@ const InputView = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
 
-        setLoading(true); 
+        setLoading(true);
         setSubmitError(null);
 
-        const formData = new FormData(); 
+        const formData = new FormData();
 
         if (selectedFile) {
             formData.append('file', selectedFile);
@@ -65,35 +71,39 @@ const InputView = () => {
             }
 
             const data = await response.json();
-            console.log('Datos recibidos del backend:', data); 
+            console.log('Datos recibidos del backend:', data);
 
             navigate('/resultado', { state: { compressionData: data } });
 
         } catch (err) {
             console.error('Error al enviar los datos:', err);
-            setSubmitError(`Error de conexión o del servidor: ${err.message}`);
+            setSubmitError(`Error de conexiÃ³n o del servidor: ${err.message}`);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
     const isSubmitDisabled = loading || (textInput.trim() === '' && !selectedFile);
 
     return (
-        <Form onSubmit={handleSubmit}> 
+        <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="TextInput">
                 <Form.Control
                     as="textarea"
                     rows={3}
                     placeholder="Ingrese el texto que desee comprimir"
-                    value={textInput} 
-                    onChange={handleTextChange} 
-                    disabled={selectedFile !== null} 
+                    value={textInput}
+                    onChange={handleTextChange}
+                    // Disable text input if a file is selected
+                    disabled={selectedFile !== null}
                 />
             </Form.Group>
-            <Form.Group controlId="FileInput.jsx" className="mb-3">
-                <Form.Label className="o"> ó </Form.Label>
+
+            {/* Integrate FileUploadComponent here */}
+            <Form.Group controlId="FileInput" className="mb-3">
+                <FileUploadComponent onFileSelected={handleFileSelected} />
             </Form.Group>
+
             {submitError && <p className="text-danger mt-2">{submitError}</p>}
             <Button variant="primary" type="submit" className="SubmitBttn" disabled={isSubmitDisabled}>
                 {loading ? 'Comprimiendo...' : 'Comprimir ahora'}

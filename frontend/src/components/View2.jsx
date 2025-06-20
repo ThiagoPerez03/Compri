@@ -3,9 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './View2.css';
 import FileOutput from './FileOutput'; 
 import Switch from './Switch';
-import DiffTable from './DiffTable';
 import BackButton from './BackButton';
-import { Stack } from 'react-bootstrap';
 
 function View2() {
   const location = useLocation();
