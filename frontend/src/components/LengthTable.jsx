@@ -63,50 +63,38 @@ export const options = {
   }
 };
 
-const DATOS = [
-  {
-    word: 'p',
-    freq: 15,
-  },
-  {
-    word: 'a',
-    freq: 23,
-  },
-  {
-    word: 'b',
-    freq: 21
-  }
-];
 
-export const data = {
-  labels: DATOS.map(e => e.word),
-  datasets: [
-    {
-      label: 'Longitud de palabra',
-      data: DATOS.map(e => e.freq),
-      backgroundColor: (context) => {
-        const chart = context.chart;
-        const { ctx, chartArea } = chart;
 
-        if (!chartArea) return null;
+const LengthTable = (datos) => {
+  const data = datos.data.tabla_codigos; // {caracter codigo frecuencia probabilidad}
+  const ChartData = {
+    labels: data.map(e => e.caracter),
+    datasets: [
+      {
+        label: 'Largo de caracter (en bits)',
+        data: data.map(e => e.codigo.length),
+        backgroundColor: (context) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
 
-        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        gradient.addColorStop(0, 'rgba(43, 54, 116, 1)');
-        gradient.addColorStop(1, 'rgba(43, 54, 116, 0.3)');
-        return gradient;
-      },
-      borderWidth: 0,
-      barThickness: 20,
-      borderRadius: 20,
-      borderSkiped: false,
-    }
-  ]
-};
+          if (!chartArea) return null;
 
-const LengthTable = () => {
-  return (
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, 'rgba(43, 54, 116, 1)');
+          gradient.addColorStop(1, 'rgba(43, 54, 116, 0.3)');
+          return gradient;
+        },
+        borderWidth: 0,
+        barThickness: 20,
+        borderRadius: 20,
+        borderSkiped: false,
+      }
+    ]
+  };
+ 
+ return (
     <div id='length-table'>
-      <Bar options={options} data={data} />
+      <Bar options={options} data={ChartData} />
     </div>
   );
 }

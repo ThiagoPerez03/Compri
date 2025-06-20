@@ -63,50 +63,35 @@ export const options = {
   }
 };
 
-const DATOS = [
-  {
-    word: 'p',
-    freq: 15,
-  },
-  {
-    word: 'a',
-    freq: 23,
-  },
-  {
-    word: 'b',
-    freq: 21
-  }
-];
+const FreqTable = (datos) => {
+  const data = datos.data.tabla_codigos; // {caracter codigo frecuencia probabilidad}
+  const ChartData = {
+    labels: data.map(e => e.caracter),
+    datasets: [
+      {
+        label: 'Frecuencia de caracter',
+        data: data.map(e => e.frecuencia),
+        backgroundColor: (context) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
 
-export const data = {
-  labels: DATOS.map(e => e.word),
-  datasets: [
-    {
-      label: 'Frecuencia de Bytes',
-      data: DATOS.map(e => e.freq),
-      backgroundColor: (context) => {
-        const chart = context.chart;
-        const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
 
-        if (!chartArea) return null;
-
-        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        gradient.addColorStop(0, 'rgba(43, 54, 116, 1)');
-        gradient.addColorStop(1, 'rgba(43, 54, 116, 0.3)');
-        return gradient;
-      },
-      borderWidth: 0,
-      barThickness: 20,
-      borderRadius: 20,
-      borderSkiped: false,
-    }
-  ]
-};
-
-const FreqTable = () => {
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, 'rgba(43, 54, 116, 1)');
+          gradient.addColorStop(1, 'rgba(43, 54, 116, 0.3)');
+          return gradient;
+        },
+        borderWidth: 0,
+        barThickness: 20,
+        borderRadius: 20,
+        borderSkiped: false,
+      }
+    ]
+  };
   return (
     <div id='freq-table'>
-      <Bar options={options} data={data} />
+      <Bar options={options} data={ChartData} />
     </div>
   );
 }

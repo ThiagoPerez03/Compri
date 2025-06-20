@@ -1,4 +1,3 @@
-import React, { useState } from 'react'; 
 import { useLocation } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './View2.css';
