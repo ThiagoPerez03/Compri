@@ -9,51 +9,42 @@ from .shannon_fano_logic import calcular_estadisticas_shannon_fano
 
 @csrf_exempt
 def api_de_compresion(peticion):
-    # --- Lógica para la Descarga (ahora vía POST) ---
-    if peticion.method == 'POST' and peticion.GET.get('download') == 'true':
-        try:
-            datos = json.loads(peticion.body)
-            texto_original = datos.get('text')
-            algoritmo = datos.get('algorithm', 'huffman')
+    if peticion.method == 'GET' and peticion.GET.get('download') == 'true':
+        texto_original = peticion.GET.get('original_text')
+        algoritmo = peticion.GET.get('algorithm', 'huffman')
+        
+        if not texto_original:
+            return JsonResponse({"error": "Texto original no proporcionado."}, status=400)
 
-            if not texto_original:
-                return JsonResponse({"error": "Texto original no proporcionado para la descarga."}, status=400)
+        resultados = calcular_estadisticas_huffman(texto_original) if algoritmo == 'huffman' else calcular_estadisticas_shannon_fano(texto_original)
+        stats = resultados.get("estadisticas_huffman") if algoritmo == 'huffman' else resultados
 
-            # Volver a calcular las estadísticas para generar el archivo
-            resultados = calcular_estadisticas_huffman(texto_original) if algoritmo == 'huffman' else calcular_estadisticas_shannon_fano(texto_original)
-            stats = resultados.get("estadisticas_huffman") if algoritmo == 'huffman' else resultados
+        if not stats or stats.get("error"):
+            return JsonResponse({"error": "No se pudieron generar los datos de compresión."}, status=500)
 
-            if not stats or stats.get("error"):
-                return JsonResponse({"error": "No se pudieron generar los datos para el archivo."}, status=500)
+        tabla_codigos = {item['caracter'].replace("' '", " "): item['codigo'] for item in stats.get("tabla_codigos", [])}
+        cadena_bits = stats.get("cadena_bits_codificada")
 
-            tabla_codigos = {item['caracter'].replace("' '", " "): item['codigo'] for item in stats.get("tabla_codigos", [])}
-            cadena_bits = stats.get("cadena_bits_codificada")
-            
-            contenido_zip = json.dumps({"codigos": tabla_codigos, "mensaje_comprimido": cadena_bits})
-            
-            buffer = io.BytesIO()
-            with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
-                zf.writestr(f'comprimido_{algoritmo}.json', contenido_zip)
-            buffer.seek(0)
-            
-            response = HttpResponse(buffer.read(), content_type='application/zip')
-            response['Content-Disposition'] = f'attachment; filename="comprimido_{algoritmo}.zip"'
-            return response
-        except Exception as e:
-            return JsonResponse({'error': f'Error al generar la descarga: {str(e)}'}, status=500)
+        contenido_json = json.dumps({"codigos": tabla_codigos, "mensaje_comprimido": cadena_bits})
+        
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr(f'comprimido_{algoritmo}.json', contenido_json)
+        buffer.seek(0)
 
-    # --- Lógica para la Compresión (subida de texto o archivo) ---
+        response = HttpResponse(buffer.read(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="comprimido_{algoritmo}.zip"'
+        return response
+
     elif peticion.method == 'POST':
         datos_de_entrada = None
         
-        # Primero, revisa si se envió un archivo
         if peticion.FILES.get('file'):
             archivo_subido = peticion.FILES.get('file')
             if archivo_subido.name.endswith('.txt'):
                 datos_de_entrada = archivo_subido.read().decode('utf-8')
             else:
                 return JsonResponse({"error": "Tipo de archivo no permitido."}, status=400)
-        # Si no, revisa si se envió texto JSON
         else:
             try:
                 datos = json.loads(peticion.body)
@@ -112,3 +103,4 @@ def api_de_descompresion(peticion):
             return JsonResponse({"error": "El archivo es inválido o no se pudo procesar."}, status=400)
 
     return JsonResponse({"error": "Método no permitido."}, status=405)
+
