@@ -3,17 +3,15 @@ import json
 import copy
 import math
 
+# --- Funciones auxiliares internas (no cambian) ---
 def _convertir_arbol_a_formato_d3(nodo, bit_del_enlace=None):
     if not nodo:
         return None
-    
     if isinstance(nodo[2], str):
         nombre_caracter = nodo[2].replace("'", "\\'").replace("\n", "\\n")
         return {"name": f"{nombre_caracter}", "value": nodo[0], "bit_code": bit_del_enlace} 
-    
     nombre_nodo = str(nodo[0])
     nodo_izquierdo, nodo_derecho = nodo[2]
-    
     return {
         "name": nombre_nodo,
         "children": [
@@ -29,27 +27,21 @@ def _construir_arbol_y_pasos(mapa_frecuencias):
     for caracter, frec in mapa_frecuencias.items():
         cola_prioridad.append([frec, contador_desempate, caracter])
         contador_desempate += 1
-    
     heapq.heapify(cola_prioridad)
-
     pasos_construccion_huffman = []
     initial_nodes = sorted(copy.deepcopy(cola_prioridad))
     pasos_construccion_huffman.append({
         "nivel": 0,
         "nodos": [f"('{item[2]}', {item[0]})" for item in initial_nodes]
     })
-    
     while len(cola_prioridad) > 1:
         nodo_menor = heapq.heappop(cola_prioridad)
         nodo_siguiente = heapq.heappop(cola_prioridad)
-        
         datos_nodo_combinado = [nodo_menor, nodo_siguiente]
         frecuencia_total = nodo_menor[0] + nodo_siguiente[0]
-        
         nodo_combinado = [frecuencia_total, contador_desempate, datos_nodo_combinado]
         heapq.heappush(cola_prioridad, nodo_combinado)
         contador_desempate += 1
-        
         current_nodes = sorted(copy.deepcopy(cola_prioridad))
         node_reprs = []
         for item in current_nodes:
@@ -57,12 +49,10 @@ def _construir_arbol_y_pasos(mapa_frecuencias):
                 node_reprs.append(f"('{item[2]}', {item[0]})")
             else:
                 node_reprs.append(f"(Interno, {item[0]})")
-        
         pasos_construccion_huffman.append({
             "nivel": len(pasos_construccion_huffman),
             "nodos": node_reprs
         })
-        
     arbol_final = cola_prioridad[0] if cola_prioridad else None
     return arbol_final, pasos_construccion_huffman
 
@@ -73,15 +63,13 @@ def _generar_codigos_desde_arbol(arbol_huffman):
         if isinstance(nodo[2], str):
             mapa_codigos[nodo[2]] = codigo_actual or "0"
             return
-        
         nodo_izquierdo, nodo_derecho = nodo[2]
         _recorrer_arbol(nodo_izquierdo, codigo_actual + "0")
         _recorrer_arbol(nodo_derecho, codigo_actual + "1")
-    
     _recorrer_arbol(arbol_huffman)
     return mapa_codigos
 
-
+# --- Función principal que usa la API ---
 def calcular_estadisticas_huffman(texto_entrada):
     if not texto_entrada:
         return {"error": "El mensaje está vacío."}

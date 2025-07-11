@@ -2,6 +2,7 @@ from collections import Counter
 import json
 import math
 
+# --- Funciones internas del algoritmo (no cambian) ---
 def _calcular_frecuencias_relativas(cadena):
     total_simbolos = len(cadena)
     if total_simbolos == 0: return {}
@@ -32,6 +33,7 @@ def _generar_codigos_recursivo(simbolos, codigo_actual="", codigos={}):
 def _codificar(cadena, mapa_codigos):
     return "".join(mapa_codigos.get(c, "") for c in cadena)
 
+# --- Función principal que usa la API ---
 def calcular_estadisticas_shannon_fano(texto_entrada):
     if not texto_entrada:
         return {"error": "El mensaje está vacío."}
