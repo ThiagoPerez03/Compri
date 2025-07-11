@@ -1,4 +1,3 @@
-// thiagoperez03/compri/Compri-1f5cff3e727635d6193603267c2bc161eaae92a4/frontend/src/components/DiffTable.jsx
 import React from "react";
 import { Card, Table} from 'react-bootstrap';
 import './DifTable.css'

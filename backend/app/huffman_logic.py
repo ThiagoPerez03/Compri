@@ -1,9 +1,7 @@
-# thiagoperez03/compri/Compri-1f5cff3e727635d6193603267c2bc161eaae92a4/backend/app/huffman_logic.py
 import heapq
 import json
 import copy
-import math # Agregado para usar math.log2
-
+import math
 
 def _convertir_arbol_a_formato_d3(nodo, bit_del_enlace=None):
     if not nodo:
@@ -107,18 +105,17 @@ def calcular_estadisticas_huffman(texto_entrada):
             "codigo": mapa_codigos.get(caracter, "ERROR")
         })
 
-    longitud_original_bits = total_caracteres * 7
+    longitud_original_bits = total_caracteres * 8
     tasa_compresion = (1 - (longitud_comprimida_bits / longitud_original_bits)) * 100 if longitud_original_bits > 0 else 0
     longitud_promedio_codigo = sum((item["frecuencia"] / total_caracteres) * len(item["codigo"]) for item in tabla_codigos if item["codigo"] != "ERROR")
     
-    # Cálculo de la entropía
     entropia = 0
     if total_caracteres > 0:
         for frec in mapa_frecuencias.values():
             probabilidad = frec / total_caracteres
-            entropia -= probabilidad * math.log2(probabilidad)
+            if probabilidad > 0:
+                entropia -= probabilidad * math.log2(probabilidad)
 
-    # Cálculo de la eficiencia
     eficiencia = (entropia / longitud_promedio_codigo) * 100 if longitud_promedio_codigo > 0 else 0
     
     datos_visualizacion_arbol = _convertir_arbol_a_formato_d3(arbol_huffman, None) if arbol_huffman else None
@@ -130,9 +127,9 @@ def calcular_estadisticas_huffman(texto_entrada):
             "tabla_codigos": sorted(tabla_codigos, key=lambda x: x['frecuencia'], reverse=True),
             "tasa_compresion_porcentaje": round(tasa_compresion, 2),
             "longitud_promedio_codigo": round(longitud_promedio_codigo, 4),
-            "mapa_frecuencias": mapa_frecuencias, # Ahora se devuelve mapa_frecuencias
+            "eficiencia": round(eficiencia, 2),
+            "mapa_frecuencias": mapa_frecuencias,
             "datos_visualizacion_arbol": datos_visualizacion_arbol, 
             "pasos_construccion_huffman": pasos_construccion,
-            "eficiencia": round(eficiencia, 2) # Se agrega la eficiencia a la respuesta
         }
     }
