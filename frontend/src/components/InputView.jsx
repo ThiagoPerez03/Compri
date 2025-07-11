@@ -57,7 +57,9 @@ const InputView = () => {
 
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
+            
+            // --- URL CORREGIDA ---
+            // Ahora apunta a la ruta estandarizada /app/api/compress/
             const response = await fetch(`${apiUrl}/app/api/compress/`, {
                 method: 'POST',
                 headers: headers,

@@ -32,7 +32,6 @@ def _generar_codigos_recursivo(simbolos, codigo_actual="", codigos={}):
 def _codificar(cadena, mapa_codigos):
     return "".join(mapa_codigos.get(c, "") for c in cadena)
 
-
 def calcular_estadisticas_shannon_fano(texto_entrada):
     if not texto_entrada:
         return {"error": "El mensaje está vacío."}
@@ -68,6 +67,7 @@ def calcular_estadisticas_shannon_fano(texto_entrada):
 
     eficiencia = (entropia / longitud_promedio_codigo) * 100 if longitud_promedio_codigo > 0 else 0
     
+    # Se devuelve un diccionario con una estructura consistente para la API
     return {
         "cadena_bits_codificada": cadena_bits_codificada,
         "longitud_comprimida_bits": longitud_comprimida_bits,
@@ -75,5 +75,6 @@ def calcular_estadisticas_shannon_fano(texto_entrada):
         "longitud_promedio_codigo": round(longitud_promedio_codigo, 4),
         "tabla_codigos": sorted(tabla_codigos, key=lambda x: x['frecuencia'], reverse=True),
         "eficiencia": round(eficiencia, 2),
-        "mapa_frecuencias": frecuencias_absolutas
+        "mapa_frecuencias": frecuencias_absolutas,
+        "error": None
     }

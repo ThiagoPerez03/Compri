@@ -120,7 +120,9 @@ def calcular_estadisticas_huffman(texto_entrada):
     
     datos_visualizacion_arbol = _convertir_arbol_a_formato_d3(arbol_huffman, None) if arbol_huffman else None
 
+    # Se devuelve un diccionario con una estructura consistente para la API
     return {
+        "mensaje_original": texto_entrada,
         "estadisticas_huffman": {
             "cadena_bits_codificada": cadena_bits_codificada,
             "longitud_comprimida_bits": longitud_comprimida_bits,
@@ -131,5 +133,6 @@ def calcular_estadisticas_huffman(texto_entrada):
             "mapa_frecuencias": mapa_frecuencias,
             "datos_visualizacion_arbol": datos_visualizacion_arbol, 
             "pasos_construccion_huffman": pasos_construccion,
-        }
+        },
+        "error": None
     }

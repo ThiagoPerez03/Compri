@@ -21,6 +21,8 @@ const FileOutput = ({ compressionData }) => {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
             const encodedOriginalText = encodeURIComponent(compressionData.mensaje_original);
             
+            // --- URL CORREGIDA ---
+            // Ahora apunta a la ruta estandarizada /app/api/compress/
             const downloadUrl = `${apiUrl}/app/api/compress/?download=true&algorithm=${algorithm}&original_text=${encodedOriginalText}`;
             
             const response = await fetch(downloadUrl);
