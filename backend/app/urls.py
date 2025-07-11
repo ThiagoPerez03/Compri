@@ -1,13 +1,7 @@
-# backend/app/urls.py
-
 from django.urls import path
-# Asegúrate de que los nombres aquí coincidan con los de views.py
-from .views import process_text_or_file, compress_and_download
+from . import views
 
 urlpatterns = [
-    # URL para procesar archivos o texto
-    path('api/process-file/', process_text_or_file, name='process_file'),
-    
-    # URL para descargar el ZIP
-    path('compress/', compress_and_download, name='compress_and_download'),
+    path('api/compress/', views.api_de_compresion, name='api_de_compresion'),
+    path('api/decompress/', views.api_de_descompresion, name='api_de_descompresion'),
 ]

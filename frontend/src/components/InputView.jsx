@@ -58,9 +58,7 @@ const InputView = () => {
         try {
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-            // --- LÍNEA MODIFICADA ---
-            // Apuntamos al nuevo endpoint del backend que creamos para procesar archivos grandes.
-            const response = await fetch(`${apiUrl}/api/process-file/`, {
+            const response = await fetch(`${apiUrl}/app/api/compress/`, {
                 method: 'POST',
                 headers: headers,
                 body: requestBody,
@@ -72,8 +70,7 @@ const InputView = () => {
             }
 
             const data = await response.json();
-            // Le cambiamos el nombre a la variable para que sea más claro
-            navigate('/resultado', { state: { processedData: data } });
+            navigate('/resultado', { state: { compressionData: data } });
 
         } catch (err) {
             setSubmitError(`Error de conexión o del servidor: ${err.message}`);
@@ -103,7 +100,7 @@ const InputView = () => {
 
             {submitError && <p className="text-danger mt-2">{submitError}</p>}
             <Button variant="primary" type="submit" className="SubmitBttn" disabled={isSubmitDisabled}>
-                {loading ? 'Procesando...' : 'Procesar y Comprimir'}
+                {loading ? 'Comprimiendo...' : 'Comprimir ahora'}
             </Button>
         </Form>
     );
