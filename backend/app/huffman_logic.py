@@ -1,6 +1,8 @@
+# thiagoperez03/compri/Compri-1f5cff3e727635d6193603267c2bc161eaae92a4/backend/app/huffman_logic.py
 import heapq
 import json
 import copy
+import math # Agregado para usar math.log2
 
 
 def _convertir_arbol_a_formato_d3(nodo, bit_del_enlace=None):
@@ -109,6 +111,16 @@ def calcular_estadisticas_huffman(texto_entrada):
     tasa_compresion = (1 - (longitud_comprimida_bits / longitud_original_bits)) * 100 if longitud_original_bits > 0 else 0
     longitud_promedio_codigo = sum((item["frecuencia"] / total_caracteres) * len(item["codigo"]) for item in tabla_codigos if item["codigo"] != "ERROR")
     
+    # Cálculo de la entropía
+    entropia = 0
+    if total_caracteres > 0:
+        for frec in mapa_frecuencias.values():
+            probabilidad = frec / total_caracteres
+            entropia -= probabilidad * math.log2(probabilidad)
+
+    # Cálculo de la eficiencia
+    eficiencia = (entropia / longitud_promedio_codigo) * 100 if longitud_promedio_codigo > 0 else 0
+    
     datos_visualizacion_arbol = _convertir_arbol_a_formato_d3(arbol_huffman, None) if arbol_huffman else None
 
     return {
@@ -121,40 +133,6 @@ def calcular_estadisticas_huffman(texto_entrada):
             "mapa_frecuencias": mapa_frecuencias, # Ahora se devuelve mapa_frecuencias
             "datos_visualizacion_arbol": datos_visualizacion_arbol, 
             "pasos_construccion_huffman": pasos_construccion,
+            "eficiencia": round(eficiencia, 2) # Se agrega la eficiencia a la respuesta
         }
     }
-
-def descomprimir_huffman_desde_archivo(contenido_archivo):
-    separador = b'###SEPARATOR###'
-    try:
-        header_bytes, resto_archivo = contenido_archivo.split(separador, 1)
-    except ValueError:
-        return {"error": "Formato de archivo inválido o corrupto (sin separador)."}
-
-    try:
-        header_json = header_bytes.decode('utf-8')
-        mapa_frecuencias = json.loads(header_json)
-    except (UnicodeDecodeError, json.JSONDecodeError):
-        return {"error": "El header del archivo está corrupto o no es JSON válido."}
-
-    arbol_huffman, _ = _construir_arbol_y_pasos(mapa_frecuencias)
-    mapa_codigos = _generar_codigos_desde_arbol(arbol_huffman)
-    mapa_inverso_codigos = {v: k for k, v in mapa_codigos.items()}
-
-    padding_info = resto_archivo[0]
-    num_padding = int.from_bytes(padding_info.to_bytes(1, 'big'), 'big')
-    datos_comprimidos = resto_archivo[1:]
-
-    cadena_bits = "".join(f'{byte:08b}' for byte in datos_comprimidos)
-    if num_padding > 0:
-        cadena_bits = cadena_bits[:-num_padding]
-
-    mensaje_decodificado = ""
-    codigo_actual = ""
-    for bit in cadena_bits:
-        codigo_actual += bit
-        if codigo_actual in mapa_inverso_codigos:
-            mensaje_decodificado += mapa_inverso_codigos[codigo_actual]
-            codigo_actual = ""
-            
-    return {"mensaje_decodificado": mensaje_decodificado}
