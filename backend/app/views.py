@@ -103,3 +103,36 @@ def api_de_descompresion(peticion):
             return JsonResponse({"error": "El archivo es inválido o no se pudo procesar."}, status=400)
 
     return JsonResponse({"error": "Método no permitido."}, status=405)
+
+def compress_and_download(request):
+    if request.method == 'POST':
+        try:
+            # Lee los datos del cuerpo de la solicitud POST
+            data = json.loads(request.body)
+            huffman_bits = data.get('huffmanBits')
+            shannon_fano_bits = data.get('shannonFanoBits')
+            file_name = data.get('fileName', 'comprimido')
+
+            if huffman_bits is None or shannon_fano_bits is None:
+                return JsonResponse({'error': 'Faltan datos de bits para la compresión.'}, status=400)
+
+            # Crea un archivo ZIP en memoria
+            in_memory_zip = io.BytesIO()
+            with zipfile.ZipFile(in_memory_zip, 'w') as zf:
+                # Agrega el archivo de Huffman
+                zf.writestr('huffman_compressed.txt', huffman_bits)
+                # Agrega el archivo de Shannon-Fano
+                zf.writestr('shannon_fano_compressed.txt', shannon_fano_bits)
+
+            # Prepara la respuesta para descargar el archivo ZIP
+            response = HttpResponse(in_memory_zip.getvalue(), content_type='application/zip')
+            response['Content-Disposition'] = f'attachment; filename="{file_name}.zip"'
+            
+            return response
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Cuerpo de la solicitud JSON inválido.'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': f'Ocurrió un error: {str(e)}'}, status=500)
+
+    return JsonResponse({'error': 'Esta vista solo acepta peticiones POST.'}, status=405)
